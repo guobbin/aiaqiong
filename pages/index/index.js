@@ -62,7 +62,7 @@ Page({
   },
 
   dateClickEvent(e) {
-    console.log(e.currentTarget.dataset);
+    // console.log(e.currentTarget.dataset);
     const {year, month, date} = e.currentTarget.dataset;
     const {data} = this.data;
     let selectDateText = '';
