@@ -42,15 +42,27 @@ page {
 .bg-danger {
   background: #E14848 !important;
 }
+.bg-a1 {
+  background: #AEEEEE !important;
+}
+.bg-n {
+  background: #436EEE !important;
+}
 
 .color-primary {
-  color: #46BC62 !important;
+  color: rgb(4, 5, 4) !important;
 }
 .color-warning {
   color: #ECAA5B !important;
 }
 .color-danger {
   color: #E14848 !important;
+}
+.color-a1 {
+  color: #AEEEEE !important;
+}
+.color-n {
+  color: #436EEE !important;
 }
 
 .border-normal {
@@ -61,6 +73,12 @@ page {
 }
 .border-danger {
   border: 2rpx solid #E14848 !important;
+}
+.border-a1 {
+  border: 2rpx solid #AEEEEE !important;
+}
+.border-n {
+  border: 2rpx solid #436EEE !important;
 }
 
 .text-center {

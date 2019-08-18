@@ -21,7 +21,8 @@ Page({
 
     //事项等级数据
     levelSelectedValue: LEVEL.normal,
-    levelSelectData: [LEVEL.normal, LEVEL.warning, LEVEL.danger],
+    levelSelectData: [LEVEL.normal, LEVEL.warning, LEVEL.danger, LEVEL.a1, LEVEL.n],
+    // levelSelectData: [LEVEL.normal, LEVEL.warning, LEVEL.danger, LEVEL.a1, LEVEL.a2, LEVEL.a3],
 
     // updatePanel 数据
     updatePanelTop: 10000,
@@ -61,6 +62,7 @@ Page({
   },
 
   dateClickEvent(e) {
+    console.log(e.currentTarget.dataset);
     const {year, month, date} = e.currentTarget.dataset;
     const {data} = this.data;
     let selectDateText = '';
@@ -93,17 +95,19 @@ Page({
     let _this = this;
     //如果不是编辑勾选模式下才生效
     if (!isEditMode) {
-      const itemList = ['详情', '删除'];
+      const itemList = ['删除'];
+      // const itemList = ['详情', '删除'];
       promiseHandle(wx.showActionSheet, { itemList: itemList, itemColor: '#2E2E3B' })
         .then((res) => {
           if (!res.cancel) {
             switch (itemList[res.tapIndex]) {
-              case '详情':
-                wx.navigateTo({ url: '../detail/detail?id=' + id });
-                break;
+              // case '详情':
+              //   wx.navigateTo({ url: '../detail/detail?id=' + id });
+              //   break;
               case '删除':
                 new DataService({ _id: id }).delete().then(() => {
-                  loadItemListData.call(_this);
+                  // loadItemListData.call(_this);
+                  changeDate.call(_this);
                 });
                 break;
             }
@@ -142,10 +146,25 @@ Page({
     const {year, month, date} = this.data.data.selected;
     // if (todoInputValue != '') { 不需要內容
     if (true) {
+      let titleValue = '';
+      switch(levelSelectedValue){
+        case 1: titleValue = 'a1';
+          break;
+        case 2: titleValue = 'a2';
+          break;
+        case 3: titleValue = 'a3';
+          break;
+        case 4: titleValue = 'p';
+          break;
+        case 5: titleValue = 'n';
+          break;
+        default:
+          break;
+      }
       let promise = new DataService({
         // title: todoInputValue,
         // content: todoTextAreaValue,
-        title: 'aiaqiong',
+        title: titleValue,
         content:'aiaqiong',
         level: levelSelectedValue,
         year: year,
@@ -159,9 +178,12 @@ Page({
           levelSelectedValue: LEVEL.normal,
           todoInputValue: ''
         });
-        loadItemListData.call(this);
+        // loadItemListData.call(this);
+        changeDate.call(this, new Date(year, parseInt(month) - 1, date));
+        // console.log(this);
       })
       closeUpdatePanel.call(this);
+     
     } else {
       showModal.call(this, '请填写事项内容');
     }
@@ -177,8 +199,10 @@ Page({
       content: '确定要删除选定的事项？',
       success: (res) => {
         if (res.confirm) {
+          // console.log(_this.data.editItemList);
           DataService.deleteRange(_this.data.editItemList).then(() => {
-            loadItemListData.call(_this);
+            // loadItemListData.call(_this);
+            changeDate.call(_this);
           });
           _this.setData({
             editItemList: [],
@@ -236,7 +260,7 @@ function showUpdatePanel() {
   let animation = wx.createAnimation({
     duration: 600
   });
-  animation.translateY('-21%').step();
+  animation.translateY('-33%').step();
   this.setData({
     updatePanelAnimationData: animation.export()
   });
@@ -272,7 +296,7 @@ function closeUpdatePanel() {
   let animation = wx.createAnimation({
     duration: 600
   });
-  animation.translateY('21%').step();
+  animation.translateY('45%').step();
   this.setData({
     updatePanelAnimationData: animation.export()
   });
@@ -281,13 +305,13 @@ function closeUpdatePanel() {
 /**
  * 加载事项列表数据
  */
-function loadItemListData(int) {
+function loadItemListData() {
   const {year, month, date} = this.data.data.selected;
-  // console.log(this.data.data.selected);
 
   let _this = this;
   DataService.findByDate(new Date(Date.parse([year, month, date].join('-')))).then((data) => {
     _this.setData({ itemList: data });
+    // console.log(data);
   });
 
 }
@@ -395,7 +419,6 @@ function changeDate(targetDate) {
 
   let dates = [];
   let _id = 0; //为wx:key指定
-
   if (beforeDayCount > 0) {
     beforeMonthDayCount = new Date(beforeYear, beforMonth, 0).getDate();
     for (let fIdx = 0; fIdx < beforeDayCount; fIdx++) {
@@ -407,18 +430,19 @@ function changeDate(targetDate) {
       });
       _id++;
 
-      DataService.findByDate(new Date(Date.parse([beforeYear, beforMonth, fIdx].join('-')))).then((data1) => {
-        t = data1.length;
-        for (let i = 0; i < dates.length; i++) {
-          if (dates[i]['date'] == fIdx && dates[i]['month'] == beforMonth && dates[i]['year'] == beforeYear) {
-            dates[i]['type'] = t > 0 ? 1 : 0;
-            this.setData({ data: data })
+      DataService.findByDate(new Date(Date.parse([beforeYear, beforMonth, beforeMonthDayCount-fIdx].join('-')))).then((data1) => {
+        if(data1 && data1.length>0){
+          for (let i = 0; i < dates.length; i++) {
+            if (dates[i]['date'] == beforeMonthDayCount-fIdx && dates[i]['month'] == beforMonth && dates[i]['year'] == beforeYear) {
+              dates[i]['type'] = data1[0]['level'];
+              this.setData({ data: data })
+            }
           }
         }
       });
     }
   }
-  let t=0;
+
   for (let cIdx = 1; cIdx <= showMonthDateCount; cIdx++) {
     
     dates.push({
@@ -433,11 +457,14 @@ function changeDate(targetDate) {
     _id++;
     
     DataService.findByDate(new Date(Date.parse([showYear, showMonth, cIdx].join('-')))).then((data1) => {
-      t = data1.length;
-      for(let i = 0; i<dates.length; i++){
-        if (dates[i]['date'] == cIdx && dates[i]['month'] == showMonth && dates[i]['year'] == showYear){
-          dates[i]['type'] = t>0? 1: 0;
-          this.setData({ data: data })
+      if (data1 && data1.length > 0) {
+        // console.log(data1);
+        for(let i = 0; i<dates.length; i++){
+          if (dates[i]['date'] == cIdx && dates[i]['month'] == showMonth && dates[i]['year'] == showYear){
+              dates[i]['type'] = data1[0]['level'];
+              this.setData({ data: data })
+            
+          }
         }
       }
     });
@@ -454,11 +481,12 @@ function changeDate(targetDate) {
       _id++;
 
       DataService.findByDate(new Date(Date.parse([afterYear, afterMonth, lIdx].join('-')))).then((data1) => {
-        t = data1.length;
-        for (let i = 0; i < dates.length; i++) {
-          if (dates[i]['date'] == lIdx && dates[i]['month'] == afterMonth && dates[i]['year'] == afterYear) {
-            dates[i]['type'] = t > 0 ? 1 : 0;
-            this.setData({ data: data })
+        if(data1 && data1.length>0){
+          for (let i = 0; i < dates.length; i++) {
+            if (dates[i]['date'] == lIdx && dates[i]['month'] == afterMonth && dates[i]['year'] == afterYear) {
+              dates[i]['type'] = data1[0]['level'];
+              this.setData({ data: data })
+            }
           }
         }
       });

@@ -4,6 +4,10 @@ module.exports = {
     LEVEL: {
         normal: 1,
         warning: 2,
-        danger: 3
+        danger: 3,
+        a1: 4,
+        n:5
+        // a2: 5,
+        // a3: 6
     }
 };

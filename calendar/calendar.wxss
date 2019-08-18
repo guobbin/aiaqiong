@@ -1,6 +1,6 @@
 .og-calendar {
-    background-color: #1D1D26;
-    color: #FFF;
+    background-color: #EEEEE0;
+    color: #000;
     padding: 0 0 40rpx 0;
 }
 .og-calendar .header {
@@ -10,6 +10,10 @@
     font-size: 35rpx;
     text-align: center;
     background: #E14848
+    
+}
+.og-calendar .header .date-info{
+    color: #FFF;
 }
 .og-calendar .header .month-pre,
 .og-calendar .header .month-next {
@@ -58,22 +62,52 @@
     border-radius: 50%;
 }
 .og-calendar .body .col.active text {
-    border-color: #E04343;
+    border-color: #FFF;
+    border-width: 2rpx;
+    /* width: 64rpx; */
+}
+
+.og-calendar .body .col.current text{
+    border-radius: 50%;
+    background: #000;
+    color: #FFF;
+    border-color:#000;
 }
 
 .og-calendar .body .col.type-1 text {
-    border-color: rgb(238, 82, 155);
-    border-width: 5px;
+    background: #008B45;
 }
+.og-calendar .body .col.type-2 text {
+    background: #EE9A00;
+}
+.og-calendar .body .col.type-3 text {
+    background: #E04343;
+}
+.og-calendar .body .col.type-4 text {
+    background: #AEEEEE;
+}
+.og-calendar .body .col.type-5 text {
+    background: #436EEE;
+}
+
+.og-calendar .body .col.active text {
+    border-color: #FFF;
+}
+
+.og-calendar .body .col.current text{
+    border-color:#000;
+    border-width: 2rpx;
+}
+
 
 .og-calendar .body .col.old {
     color: #7A7A7F
 } 
-.og-calendar .body .col.current text,
+/* .og-calendar .body .col.current text,
 .og-calendar .body .col text:active {
     background-color: #E04343;
     color: #FFF;
-}
+} */
 
 
 /*.og-picker {

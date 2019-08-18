@@ -38,7 +38,7 @@
     </view>
     <view class="body row">  
       <block wx:for="{{data.dates}}" wx:key="_id">
-        <view bindtap="dateClickEvent" data-year="{{item.year}}" data-month="{{item.month}}" data-date="{{item.date}}" class="col {{data.showMonth == item.month ? '' : 'old'}} {{data.currentDate == item.date && data.currentYear==item.year && data.currentMonth == item.month ? 'current' : ''}} {{item.active ? 'active' : ''}} {{item.type==1? 'type-1':''}}">
+        <view bindtap="dateClickEvent" data-year="{{item.year}}" data-month="{{item.month}}" data-date="{{item.date}}" class="col {{data.showMonth == item.month ? '' : 'old'}} {{data.currentDate == item.date && data.currentYear==item.year && data.currentMonth == item.month ? 'current' : ''}} {{item.active ? 'active' : ''}} {{item.type!=0? 'type-'+item.type:''}}">
           <text>{{item.date}}</text>
         </view> 
       </block>
@@ -64,6 +64,8 @@
           <image wx:if="{{item.level == 1}}" class="icon" src="../../images/success.png" />
           <image wx:if="{{item.level == 2}}" class="icon" src="../../images/notice.png" />
           <image wx:if="{{item.level == 3}}" class="icon" src="../../images/fav-round.png" />
+          <image wx:if="{{item.level == 4}}" class="icon" src="../../images/a1.png" />
+          <image wx:if="{{item.level == 5}}" class="icon" src="../../images/n.png" />
           <view class="content">
             <text class="title">{{item.title}}</text>
           </view>
@@ -116,7 +118,7 @@
   <textarea placeholder="请输入事项内容" value="{{todoTextAreaValue}}" bindblur="todoTextAreaChangeEvent"></textarea> -->
   <view class="level">
     <block wx:for="{{levelSelectData}}" wx:key="*this">
-      <view bindtap="levelClickEvent" data-level="{{item}}" class="item {{item == 1 ? 'border-normal' : ''}} {{item == 2 ? 'border-warning' : '' }} {{item == 3 ? 'border-danger' : ''}} {{item == levelSelectedValue && item == 1 ? 'bg-normal' : ''}} {{item == levelSelectedValue && item == 2 ? 'bg-warning' : ''}} {{item == levelSelectedValue && item == 3 ? 'bg-danger' : ''}}"></view>
+      <view bindtap="levelClickEvent" data-level="{{item}}" class="item {{item == 1 ? 'border-normal' : ''}} {{item == 2 ? 'border-warning' : '' }} {{item == 3 ? 'border-danger' : ''}} {{item == levelSelectedValue && item == 1 ? 'bg-normal' : ''}} {{item == levelSelectedValue && item == 2 ? 'bg-warning' : ''}} {{item == levelSelectedValue && item == 3 ? 'bg-danger' : ''}} {{item == 4 ? 'border-a1' : ''}} {{item == levelSelectedValue && item == 4 ? 'bg-a1' : ''}} {{item == 5 ? 'border-n' : ''}}  {{item == levelSelectedValue && item == 5 ? 'bg-n' : ''}}"></view>
     </block>
   </view>
   <view class="footer">

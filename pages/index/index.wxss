@@ -1,8 +1,11 @@
 @import "../../calendar/calendar.wxss";
 
 .wrapper {
-    padding-bottom: 160rpx;
+    padding-bottom: 0rpx;
 }
+/* .wrapper {
+    padding-bottom: 160rpx;
+} */
 
 .show-date {
     margin: 30rpx 0;
@@ -66,9 +69,10 @@
     overflow: hidden;
     white-space:nowrap;
     text-overflow: ellipsis;
-    font-weight: lighter;
-    font-size: 32rpx;
+    font-weight:bold;
+    font-size: 40rpx;
     margin-top: 30rpx;
+    margin-left: 30rpx;
 }
 
 
@@ -183,7 +187,7 @@
     position: absolute;
     left: 0;
     right: 0;
-    height: 100rpx;
+    height: 150rpx;
     top: 0rpx;
     border-top: 2rpx solid #333;
     padding: 20rpx 0;
@@ -192,10 +196,10 @@
     justify-content: center;
 }
 .updatePanel .level .item {
-    width: 50rpx;
-    height: 50rpx;
+    width: 70rpx;
+    height: 70rpx;
     border-radius: 50%;
-    margin: 0 60rpx;
+    margin: 0 30rpx;
 }
 .updatePanel .footer {
     position: absolute;
@@ -203,7 +207,7 @@
     left: 0;
     height: 100rpx;
     right: 0;
-    top: 140rpx;
+    top: 250rpx;
     border-top: 2rpx solid #333;
 }
 .updatePanel .footer .btn {
