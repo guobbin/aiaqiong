@@ -4,7 +4,7 @@ import {promiseHandle, log, formatNumber} from '../../utils/util';
 //www.srcfans.com
 Page({
   data: {
-    data1: [],
+    a: '0',
     liang:18,
     showMonth: {},
     data: {},
@@ -107,7 +107,7 @@ Page({
               case '删除':
                 new DataService({ _id: id }).delete().then(() => {
                   // loadItemListData.call(_this);
-                  changeDate.call(_this);
+                  changeDate.call(_this, new Date(year, parseInt(month) - 1, date));
                 });
                 break;
             }
@@ -146,7 +146,7 @@ Page({
     const {year, month, date} = this.data.data.selected;
     // if (todoInputValue != '') { 不需要內容
     if (true) {
-      let titleValue = '';
+      let titleValue = 'wrong';
       switch(levelSelectedValue){
         case 1: titleValue = 'a1';
           break;
@@ -171,7 +171,11 @@ Page({
         month: parseInt(month) - 1,
         date: date
       }).save();
+      
       promise && promise.then(() => {
+        // this.setData({
+        //   a:'1'
+        // });
         //清空表单
         this.setData({
           todoTextAreaValue: '',
@@ -202,7 +206,7 @@ Page({
           // console.log(_this.data.editItemList);
           DataService.deleteRange(_this.data.editItemList).then(() => {
             // loadItemListData.call(_this);
-            changeDate.call(_this);
+            changeDate.call(_this, new Date(year, parseInt(month) - 1, date));
           });
           _this.setData({
             editItemList: [],
@@ -307,9 +311,10 @@ function closeUpdatePanel() {
  */
 function loadItemListData() {
   const {year, month, date} = this.data.data.selected;
-
+  // console.log(new Date(Date.parse([year, monthstr, datestr].join('-'))));
+  // console.log(new Date(year, month-1, date));
   let _this = this;
-  DataService.findByDate(new Date(Date.parse([year, month, date].join('-')))).then((data) => {
+  DataService.findByDate(new Date(year, month - 1, date)).then((data) =>   {
     _this.setData({ itemList: data });
     // console.log(data);
   });
@@ -430,7 +435,7 @@ function changeDate(targetDate) {
       });
       _id++;
 
-      DataService.findByDate(new Date(Date.parse([beforeYear, beforMonth, beforeMonthDayCount-fIdx].join('-')))).then((data1) => {
+      DataService.findByDate(new Date(beforeYear, beforMonth-1, beforeMonthDayCount-fIdx)).then((data1) => {
         if(data1 && data1.length>0){
           for (let i = 0; i < dates.length; i++) {
             if (dates[i]['date'] == beforeMonthDayCount-fIdx && dates[i]['month'] == beforMonth && dates[i]['year'] == beforeYear) {
@@ -456,7 +461,7 @@ function changeDate(targetDate) {
     });
     _id++;
     
-    DataService.findByDate(new Date(Date.parse([showYear, showMonth, cIdx].join('-')))).then((data1) => {
+    DataService.findByDate(new Date(showYear, showMonth-1, cIdx)).then((data1) => {
       if (data1 && data1.length > 0) {
         // console.log(data1);
         for(let i = 0; i<dates.length; i++){
@@ -480,7 +485,7 @@ function changeDate(targetDate) {
       });
       _id++;
 
-      DataService.findByDate(new Date(Date.parse([afterYear, afterMonth, lIdx].join('-')))).then((data1) => {
+      DataService.findByDate(new Date(afterYear, afterMonth, lIdx)).then((data1) => {
         if(data1 && data1.length>0){
           for (let i = 0; i < dates.length; i++) {
             if (dates[i]['date'] == lIdx && dates[i]['month'] == afterMonth && dates[i]['year'] == afterYear) {

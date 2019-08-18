@@ -9,12 +9,15 @@ class DataRepository {
      * @returns {Promise} 
      */
     static addData(data) {
-        if (!data) return false;
+        if (!data){
+          return false;
+        }
         data['_id'] = guid();
         return DataRepository.findAllData().then(allData => {
             allData = allData || [];
             allData.unshift(data);
             wx.setStorage({key:Config.ITEMS_SAVE_KEY, data: allData});
+
         });
     }
 

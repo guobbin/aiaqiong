@@ -46,7 +46,7 @@
   </view>
 
   <view class="show-date">
-    <text>{{data.selectDateText}}</text>
+    <text>{{data.selectDateText}}{{a}}</text>
   </view>
 
   <view class="common-list">
